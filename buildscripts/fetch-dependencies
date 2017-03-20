@@ -1,0 +1,58 @@
+#!/bin/bash
+
+
+IOPRO_INCLUDE_PATH=$HOME/anaconda/envs/iopro-test-np1.7/include/python2.7
+
+WHERE="$HOME/dependencies/"
+
+function mk_depend_path()
+{
+    echo $WHERE$1
+}
+
+if [ ! -d $(mk_depend_path '') ]; then
+    mkdir $(mk_depend_path '')
+fi
+
+pushd $(mk_depend_path '') >/dev/null
+
+# mongo-c-driver (v.0.7.1)
+if [ ! -d mongo-c-driver ]; then
+    git clone git://github.com/mongodb/mongo-c-driver.git
+    pushd mongo-c-driver >/dev/null
+    git checkout v0.7.1
+
+    # build mongo-c-driver
+    export MONGO_PATH=$(mk_depend_path 'build/mongo-c-driver')
+
+    make
+    mkdir temp
+    make install PREFIX=$(mk_depend_path install/mongo-c-driver/temp)
+    popd >/dev/null
+fi
+
+
+
+IOPRO_INCLUDE_PATH=$(mk_depend_path mongo-c-driver/src):$IOPRO_INCLUDE_PATH
+export IOPRO_INCLUDE_PATH
+
+echo 'IOPRO_INCLUDE_PATH=' $IOPRO_INCLUDE_PATH
+
+IOPRO_LIBRARY_PATH=$(mk_depend_path mongo-c-driver):$IOPRO_LIBRARY_PATH
+export IOPRO_LIBRARY_PATH
+
+echo 'IOPRO_LIBRARY_PATH=' $IOPRO_LIBRARY_PATH
+
+LD_LIBRARY_PATH=$(mk_depend_path install/mongo-c-driver/temp/lib):$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+
+echo 'LD_LIBRARY_PATH=' $LD_LIBRARY_PATH
+
+popd >/dev/null
+
+printf '\n\nBuilding...\n'
+python setup.py build_ext --inplace --include-dirs=$IOPRO_INCLUDE_PATH --library-dirs=$IOPRO_LIBRARY_PATH || exit 1
+
+exit
+
+

@@ -1,0 +1,9 @@
+name: mongoadapter
+dependencies:
+- ipython
+- numpy
+- pandas
+- pytest
+- cython
+- mongo-driver
+- pymongo

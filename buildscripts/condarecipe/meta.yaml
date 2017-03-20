@@ -1,0 +1,41 @@
+package:
+  name: mongoadapter
+  version: "2.0.0"
+
+source:
+  path: ../../
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - python 
+    - numpy
+    - cython
+    - mongo-driver
+    - pymongo
+
+  run:
+    - python 
+    - numpy
+    - pandas
+    - six
+    - ordereddict     [py26]
+    - mongo-driver
+
+test:
+  requires:
+    - nose
+    - pytest
+    - pymongo
+
+  imports:
+    - mongoadapter
+    - mongoadapter.core
+    - mongoadapter.core.MongoAdapter
+
+about:
+  home: http://www.continuum.io/
+  license: BSD
+  summary: python interface for Mongo databases
