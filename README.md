@@ -75,3 +75,12 @@ module's test function:
 ```python
 python -Wignore -c 'import mongoadapter; mongoadapter.test()'
 ```
+
+
+Related projects
+----------------
+
+- TextAdapter (CSV, JSON, etc): https://github.com/ContinuumIO/TextAdapter
+- DBAdapter (SQL derivatives): https://github.com/ContinuumIO/DBAdapter
+- PostgresAdapter (PostgreSQL): https://github.com/ContinuumIO/PostgresAdapter
+- AccumuloAdapter (Apache Accumulo): https://github.com/ContinuumIO/AccumuloAdapter
